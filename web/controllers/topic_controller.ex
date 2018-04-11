@@ -42,7 +42,7 @@ defmodule Discuss.TopicController do
         |> redirect(to: topic_path(conn, :index))
       {:error, changeset} ->
         conn
-        |> render "edit.html", changeset: changeset, topic: old_topic
+        |> render("edit.html", changeset: changeset, topic: old_topic)
     end
   end
 
