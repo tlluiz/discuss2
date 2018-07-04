@@ -2,9 +2,9 @@ defmodule Discuss.AuthController do
   use Discuss.Web, :controller
   plug Ueberauth
 
-  alias Discuss.User 
-  
-  def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do 
+  alias Discuss.User
+
+  def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     user_params = %{ token: auth.credentials.token,
       email: auth.info.email,
       provider: "github"
@@ -12,6 +12,12 @@ defmodule Discuss.AuthController do
 
     changeset = User.changeset(%User{}, user_params)
     signin(conn, changeset)
+  end
+
+  def signout(conn, _params) do
+    conn
+    |> configure_session(drop: true)
+    |> redirect(to: topic_path(conn, :index))
   end
 
   defp signin(conn, changeset) do
